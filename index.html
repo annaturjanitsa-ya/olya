@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ігри, в які грала Оля</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* COLOUR now: ніжно-рожевий #f2b5cb, лавандовий #cdb8f4, сливовий текст #3a2340
+   VOICE: теплий і грайливий квіз до Дня народження Олі про її мандри 2026 року, з посмішкою від Еріка Берна
+   IDEA: колаж-щоденник подорожей: кожне питання — квиток чи листівка з місця, де вона була
+   PICTURE: торт «Батько–Дорослий–Дитина» серед квитка, марки й гірського силуету, як вирізки на колажі
+   COLOUR and TYPE: корал #e8453c, чорнило #3a2340, сонячний #cdb8f4; Comfortaa + Manrope
+   LAYOUT: коралова смуга з тортом і заголовком, нижче одна картка-питання по центру */
+:root{color-scheme:light dark;
+--bg:light-dark(#fff7fa,#1d1520);--ink:light-dark(#3a2340,#f8eef5);--muted:light-dark(#7a6280,#bfa9c4);
+--coral:#f2b5cb;--coral2:light-dark(#c2577f,#f4a3c2);--sun:#cdb8f4;--card:light-dark(#ffffff,#271c2b);--line:light-dark(#f3dbe6,#3d2d42);
+--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c9322a,#ff7d72)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Manrope,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.hero{background:linear-gradient(135deg,#f7c7d8,#e9d5f7);color:#3a2340}
+.hero-in{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+h1{font:700 clamp(32px,5.4vw,52px)/1.05 Comfortaa,sans-serif;margin:0 0 16px;text-wrap:balance}
+.lead{font-size:18px;max-width:34em;margin:0 0 24px;color:#5d3f63}
+.fig{position:relative;min-height:340px}.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.btn{font:700 16px Manrope,sans-serif;min-height:48px;padding:12px 26px;border-radius:999px;border:0;cursor:pointer;background:var(--ink);color:var(--bg)}
+.hero .btn{background:#3a2340;color:#fff}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+main{max-width:720px;margin:0 auto}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:14px;color:var(--muted);font-size:15px}
+.bar{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#f2a7c3,#b9a0ea);transition:width .4s}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,4vw,40px);box-shadow:0 18px 40px -24px rgba(170,90,140,.3)}
+.tag{display:inline-block;margin-bottom:12px;padding:4px 12px;border-radius:999px;background:color-mix(in srgb,var(--sun) 35%,transparent);font-size:14px;font-weight:700}
+h2{font:700 clamp(21px,3vw,27px)/1.25 Comfortaa,sans-serif;margin:0 0 22px;text-wrap:balance}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:600 16px/1.4 Manrope,sans-serif;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:14px;padding:13px 16px;min-height:48px;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--coral)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent)}
+.opt[disabled]{cursor:default}
+.why{margin:20px 0 0;padding:16px 18px;border-radius:14px;background:color-mix(in srgb,var(--sun) 22%,transparent)}
+.why b{display:block;margin-bottom:4px}
+.next{margin-top:20px;display:flex;justify-content:flex-end}
+.final{text-align:center}
+.score{font:700 clamp(56px,12vw,96px)/1 Comfortaa,sans-serif;color:var(--coral2);margin:8px 0}
+.wish{font-size:18px;max-width:32em;margin:18px auto 26px}
+.note{color:var(--muted);font-size:14px;text-align:center;margin-top:26px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:9}
+@media(max-width:600px){.hero-in{grid-template-columns:minmax(0,1fr)}.fig{min-height:260px;order:2}}
+@media(prefers-reduced-motion:reduce){#confetti{display:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<header class="band hero">
+  <div class="hero-in">
+    <div>
+      <h1>Олю, з Днем народження! Згадаємо, де ти грала цього року?</h1>
+      <p class="lead">Дев'ять питань про твої мандри 2026-го: від Говерли до Ксамілю, від полтавських галушок до житомирських шкарпеток. А наприкінці — побажання в дусі Еріка Берна.</p>
+      <button class="btn" id="start">Почати гру</button>
+    </div>
+    <div class="fig" aria-hidden="true">
+      <svg viewBox="0 0 300 340" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id="g" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fde3ec"/></radialGradient>
+          <linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a8"/><stop offset="1" stop-color="#ff9a2e"/></linearGradient>
+        </defs>
+        <path d="M0 330L46 262L74 290L118 220L160 290L200 236L250 300L300 250V340H0Z" fill="#3a2340" opacity=".22"/>
+        <ellipse cx="150" cy="326" rx="92" ry="10" fill="#000" opacity=".16"/>
+        <rect x="145" y="22" width="10" height="38" rx="3" fill="#cdb8f4"/>
+        <path d="M150 0c8 10 10 17 0 24c-10-7-8-14 0-24z" fill="url(#f)"><animate attributeName="opacity" values="1;.75;1" dur="1.2s" repeatCount="indefinite"/></path>
+        <g font-family="Comfortaa,sans-serif" font-weight="700" text-anchor="middle" fill="#3a2340">
+          <circle cx="150" cy="105" r="46" fill="url(#g)" stroke="#3a2340" stroke-width="4"/><text x="150" y="112" font-size="19">Батько</text>
+          <circle cx="150" cy="190" r="46" fill="url(#g)" stroke="#3a2340" stroke-width="4"/><text x="150" y="197" font-size="17">Дорослий</text>
+          <circle cx="150" cy="275" r="46" fill="url(#g)" stroke="#3a2340" stroke-width="4"/><text x="150" y="282" font-size="19">Дитина</text>
+        </g>
+        <g transform="rotate(-12 50 150)"><rect x="8" y="128" width="78" height="44" rx="4" fill="#fff" stroke="#3a2340" stroke-width="2"/><path d="M62 128v44" stroke="#3a2340" stroke-width="2" stroke-dasharray="4 3"/><text x="34" y="148" font-family="Comfortaa,sans-serif" font-size="10" font-weight="700" text-anchor="middle" fill="#c2577f">DNIPRO</text><text x="34" y="162" font-family="Manrope,sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#3a2340">→ KSAMIL</text></g>
+        <g transform="rotate(10 255 215)"><rect x="228" y="190" width="54" height="52" fill="#cdb8f4" stroke="#fff" stroke-width="5" stroke-dasharray="3 3"/><path d="M234 236l14-22l9 11l7-7l12 18z" fill="#3a2340"/><text x="255" y="207" font-family="Comfortaa,sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#3a2340">2061</text></g>
+        <g fill="#cdb8f4"><circle cx="58" cy="70" r="6"/><circle cx="250" cy="140" r="5"/><circle cx="262" cy="70" r="7"/></g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <main id="app" aria-live="polite"></main>
+  <p class="note">Квіз зібрано з любов'ю від колег — за мотивами твого Instagram.</p>
+</section>
+<canvas id="confetti"></canvas>
+
+<script>
+{
+const Q=[
+ {t:"Липень · Карпати",q:"Цього літа ти підкорила найвищу точку України. Яку саме і якої висоти?",o:["Говерла, 2061 м","Петрос, 2020 м","Піп Іван, 2028 м","Говерла, 1863 м"],a:0,w:"Говерла, 2061 метр. Батько каже «одягни шапку», Дорослий перевіряє прогноз, а Дитина просто біжить на вершину."},
+ {t:"Жовтень · Чорногора",q:"Восени ти знову пішла в гори. Яку вершину Чорногірського хребта заввишки 1863 м ти підкорила?",o:["Піп Іван","Шпиці","Бребенескул","Туркул"],a:1,w:"Шпиці — ті самі гострі скелі. «Осінь у горах» вдалася на всі 1863 метри."},
+ {t:"Серпень · Море",q:"Де ти купалася в найбирюзовішій воді цього літа?",o:["Будва, Чорногорія","Батумі, Грузія","Ксаміль, Албанія","Санторіні, Греція"],a:2,w:"Ксаміль в Албанії — бірюзова вода, яку легко сплутати з фотошопом."},
+ {t:"Літо ʼ26 · Україна",q:"Чим тебе зустріла Полтава?",o:["Варениками","Галушками","Пампушками","Борщем"],a:1,w:"Полтавські галушки — класика, від якої не відмовляються навіть найсуворіші внутрішні Батьки."},
+ {t:"Літо ʼ26 · Україна",q:"А що ти привезла з Житомира?",o:["Мед","Магнітик","Шкарпетки","Сир"],a:2,w:"Житомирські шкарпетки! Найпрактичніший сувенір року."},
+ {t:"Літо ʼ26 · Україна",q:"Який франківський кадр потрапив у твій літній список?",o:["Фонтани","Кава","Кручі","Заходи сонця"],a:0,w:"Івано-франківські фонтани. А кава — то вже Харків, кручі — Київ, а заходи сонця — рідний Дніпро."},
+ {t:"Дніпро · завжди",q:"Що у твоєму літньому списку дісталося рідному Дніпру?",o:["Набережна","Заходи сонця","Мости","Кава"],a:1,w:"Дніпровські заходи сонця — найкращі, і ніхто не сперечається."},
+ {t:"Жовтень · Концерт",q:"На чиєму концерті «100 годин» ти була в жовтні — «така пригода була»?",o:["Океан Ельзи","Бумбокс","Скрябін","Антитіла"],a:2,w:"Скрябін, «100 годин». Тут однозначно керувала весела Дитина."},
+ {t:"Ножиці й клей",q:"Як називається проєкт, де ви з Ірою проводите крафтові майстерки?",o:["Крафтинка","Колажна","Клей і Ко","Вирізайка"],a:0,w:"Крафтинка! Місце, де можна покрафтити й покайфувати від процесу. Найчесніша гра без прихованих виграшів."}
+];
+const app=document.getElementById('app');
+let i=0,score=0;
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function ask(){
+  const x=Q[i];
+  app.innerHTML=`<div class="meta"><span>Питання ${i+1} з ${Q.length}</span><span>Рахунок: ${score}</span></div>
+  <div class="bar"><i style="width:${i/Q.length*100}%"></i></div>
+  <article class="card"><span class="tag">${esc(x.t)}</span><h2 id="qh">${esc(x.q)}</h2>
+  <div class="opts" role="group" aria-labelledby="qh">${x.o.map((t,k)=>`<button class="opt" data-k="${k}">${esc(t)}</button>`).join('')}</div>
+  <div id="fb"></div></article>`;
+  app.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>pick(+b.dataset.k)));
+}
+function pick(k){
+  const x=Q[i],ok=k===x.a;
+  if(ok)score++;
+  app.querySelectorAll('.opt').forEach((b,n)=>{b.disabled=true;if(n===x.a)b.classList.add('right');else if(n===k)b.classList.add('wrong')});
+  app.querySelector('.meta span:last-child').textContent='Рахунок: '+score;
+  const last=i===Q.length-1;
+  document.getElementById('fb').innerHTML=`<div class="why"><b>${ok?"Так і є!":"Майже! Правильна відповідь виділена."}</b>${esc(x.w)}</div>
+  <div class="next"><button class="btn" id="nx">${last?"Дізнатися результат":"Далі"}</button></div>`;
+  const nx=document.getElementById('nx');nx.focus();
+  nx.addEventListener('click',()=>{i++;i<Q.length?ask():finish()});
+}
+function verdict(){
+  if(score>=8)return "Ти пам'ятаєш кожну вершину й кожну галушку. Справжня мандрівниця!";
+  if(score>=5)return "Чудово! Пора склеїти з цього року колаж.";
+  return "Головне не пам'ятати, а відчувати. І їхати знову!";
+}
+function finish(){
+  app.innerHTML=`<article class="card final">
+  <p style="margin:0;color:var(--muted)">Твій результат</p>
+  <div class="score">${score}/${Q.length}</div>
+  <h2>${verdict()}</h2>
+  <p class="wish">Олю, з Днем народження! Берн писав, що найцінніше в житті — усвідомленість, спонтанність і близькість. Бажаємо, щоб їх було вдосталь: нових вершин і моря, теплих заходів сонця вдома, майстерок, на які розбирають усі місця, і людей поруч, з якими не треба грати в жодні ігри.</p>
+  <button class="btn ghost" id="again">Зіграти ще раз</button></article>`;
+  document.getElementById('again').addEventListener('click',()=>{i=0;score=0;ask();app.scrollIntoView({behavior:'smooth'})});
+  confetti();
+}
+function begin(){i=0;score=0;ask();app.scrollIntoView({behavior:'smooth',block:'start'})}
+document.getElementById('start').addEventListener('click',begin);
+app.innerHTML=`<article class="card final"><h2>Пакуй рюкзак!</h2><p class="wish" style="margin:0 auto 22px">Натисни «Почати» — і вирушаємо по твоїх маршрутах цього року.</p><button class="btn" id="s2">Почати</button></article>`;
+document.getElementById('s2').addEventListener('click',begin);
+
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cv=document.getElementById('confetti'),x=cv.getContext('2d');
+  const W=cv.width=innerWidth,H=cv.height=innerHeight,cols=['#f2a7c3','#cdb8f4','#ffffff','#ffd6e0','#f9c8a8'];
+  const p=Array.from({length:140},()=>({x:Math.random()*W,y:-20-Math.random()*H*.5,r:4+Math.random()*6,c:cols[Math.random()*5|0],v:2+Math.random()*3,s:Math.random()*6,a:Math.random()*6}));
+  let t=0;
+  const step=()=>{x.clearRect(0,0,W,H);p.forEach(o=>{o.y+=o.v;o.a+=.05;o.x+=Math.sin(o.a+o.s);x.fillStyle=o.c;x.fillRect(o.x,o.y,o.r,o.r*.6)});
+    if(++t<260)requestAnimationFrame(step);else x.clearRect(0,0,W,H)};
+  step();
+}
+}
+</script>
+</body>
+</html>
